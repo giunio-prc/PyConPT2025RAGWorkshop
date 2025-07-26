@@ -3,7 +3,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, UploadFile, HTTPException
 from app.controller.controller import add_text_into_db, query_the_agent
 from app.databases.fakedatabase import FakeDatabase
-from app.agents.fakeagent import FakeAgent
+# from app.agents.fakeagent import FakeAgent
+from app.agents.cohereagent import ChatCohere, CohereAgent
 from app.interfaces.database import DatabaseI
 from app.interfaces.agent import AIAgentI
 
@@ -11,7 +12,7 @@ from app.interfaces.agent import AIAgentI
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     db = FakeDatabase()
-    agent = FakeAgent()
+    agent = CohereAgent()
     yield {"db": db, "agent": agent}
 
 

@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+
 from app.interfaces.agent import AIAgentI
 
 from langchain_cohere import ChatCohere
@@ -9,12 +11,15 @@ from langchain.prompts import (
 from langchain.schema import StrOutputParser
 from langchain_core.runnables import RunnableSequence
 
+load_dotenv()
+
+
 class CohereAgent(AIAgentI):
 
     def query_agent(self, question: str, context: list[str]) -> str:
         model = ChatCohere(model="command-r-plus")
         
-        context = " ".join(context)
+        context_str = " ".join(context)
         system_message_prompt = (
             SystemMessagePromptTemplate.from_template(self.template)
         )
@@ -23,13 +28,13 @@ class CohereAgent(AIAgentI):
 
         )
         chat_prompt_template = (
-            ChatPromptTemplate.from_template([system_message_prompt, human_message_prompt])
+            ChatPromptTemplate([system_message_prompt, human_message_prompt])
         )
         chain: RunnableSequence = chat_prompt_template | model | StrOutputParser()
 
         answer: str = chain.invoke({
             "question": question,
-            "context": context
+            "context": context_str
         })
 
         return answer
