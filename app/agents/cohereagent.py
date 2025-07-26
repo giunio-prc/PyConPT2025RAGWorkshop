@@ -14,6 +14,7 @@ class CohereAgent(AIAgentI):
     def query_agent(self, question: str, context: list[str]) -> str:
         model = ChatCohere(model="command-r-plus")
         
+        context = " ".join(context)
         system_message_prompt = (
             SystemMessagePromptTemplate.from_template(self.template)
         )
