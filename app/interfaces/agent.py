@@ -25,5 +25,5 @@ class AIAgentI(ABC):
     """
 
     @abstractmethod
-    def query_agent(self, query: str) -> str:
+    def query_agent(self, question: str, context: list[str]) -> str:
         pass
